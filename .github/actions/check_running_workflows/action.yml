@@ -40,6 +40,6 @@ runs:
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
       run: |
-        chmod +x ./scripts/get_existing_runs.sh
-        ./scripts/get_existing_runs.sh
-      shell: bash       
+        chmod +x ./.github/actions/check_running_workflows/get_existing_runs.sh
+        ./.github/actions/check_running_workflows/get_existing_runs.sh
+      shell: bash
