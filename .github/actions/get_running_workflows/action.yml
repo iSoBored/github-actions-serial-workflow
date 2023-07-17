@@ -7,7 +7,7 @@ inputs:
 outputs:
   workflows_running:
     description: true if there are existing workflows
-    value: something
+    value: ${{ steps.check_existing.outputs.existing_runs }}
 runs:
   using: composite
   steps:
@@ -46,8 +46,4 @@ runs:
       run: | 
         chmod +x ./.github/actions/get_running_workflows/get_existing_runs.sh
         ./.github/actions/get_running_workflows/get_existing_runs.sh
-      shell: bash
-    - name: Echo Existing
-      run: echo ${{ steps.check_existing.outputs.existing_runs }}
-      shell: bash
-        
+      shell: bash       
