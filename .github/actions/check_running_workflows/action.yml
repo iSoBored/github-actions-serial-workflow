@@ -7,9 +7,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Install Jq Package
-      run: sudo apt install jq
-      shell: bash
     - name: Get Current workflow_id
       id: get_id
       run: |
@@ -40,6 +37,6 @@ runs:
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
       run: |
-        chmod +x ./.github/actions/check_running_workflows/get_existing_runs.sh
-        ./.github/actions/check_running_workflows/get_existing_runs.sh
+        chmod +x ./scripts/get_existing_runs.sh
+        ./scripts/get_existing_runs.sh
       shell: bash
