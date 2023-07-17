@@ -39,7 +39,8 @@ runs:
       id: check_existing
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
-      run: | 
+      run: |
+        cat all_runs.txt
         chmod +x ./.github/actions/get_running_workflows/get_existing_runs.sh
         ./.github/actions/get_running_workflows/get_existing_runs.sh
       shell: bash       
