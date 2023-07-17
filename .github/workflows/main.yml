@@ -4,6 +4,7 @@ on: [push]
 jobs:
   check_workflows:
     runs-on: ubuntu-latest
+    name: Check Workflows
     outputs:
       workflows_running: ${{ steps.check_running_workflows.outputs.workflows_running }}
     steps:
@@ -16,7 +17,7 @@ jobs:
     env:
       workflows_running: ${{ needs.check_workflows.outputs.workflows_running }}
     runs-on: ubuntu-latest
-    name: wait for some time
+    name: Main Job
     steps:
       - name: Echo running var
         run: echo ${{ env.workflows_running }}

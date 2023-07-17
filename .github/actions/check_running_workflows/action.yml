@@ -7,9 +7,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Install Jq Package
-      run: sudo apt install jq
-      shell: bash
     - name: Get Current workflow_id
       id: get_id
       run: |
