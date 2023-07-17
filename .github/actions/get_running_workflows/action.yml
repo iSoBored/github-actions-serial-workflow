@@ -41,3 +41,9 @@ runs:
         jq -r '.workflow_runs[].run_number' in_progress_runs.json >> all_runs.txt
         cat all_runs.txt
       shell: bash
+    - name: Check Existing Runs
+      run: | 
+        chmod +x ./.github/actions/get_running_workflows/get_existing_runs.sh
+        ./.github/actions/get_running_workflows/get_existing_runs.sh
+      shell: bash
+        
