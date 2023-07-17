@@ -1,0 +1,15 @@
+name: Test Workflow
+on: [push]
+
+jobs:
+  get_workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Get Running Workflows
+        id: test
+        uses: .github/actions/get_running_workflows
+      - name: Echo Output
+        run: echo ${{ steps.test.outputs.workflows_running }}
+        shell: bash
