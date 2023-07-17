@@ -10,6 +10,8 @@ jobs:
       - name: Get Running Workflows
         id: test
         uses: ./.github/actions/get_running_workflows
+        with:
+          GITHUB_TOKEN: ${{secrets.TOKEN}}
       - name: Echo Output
         run: echo ${{ steps.test.outputs.workflows_running }}
         shell: bash
