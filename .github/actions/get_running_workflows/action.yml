@@ -1,7 +1,7 @@
 name: Get Running Workflows
 description: Get existing workflows which are in progress or queued
 inputs:
-  GITHUB_TOKEN:
+  TOKEN:
     required: true
     description: Token for auth
 outputs:
