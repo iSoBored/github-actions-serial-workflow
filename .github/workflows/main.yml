@@ -4,14 +4,35 @@ on: [push]
 jobs:
   get_workflows:
     runs-on: ubuntu-latest
+    outputs:
+      workflows_running: ${{ steps.get_running_workflows.outputs.workflows_running }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Get Running Workflows
-        id: test
+        id: get_running_workflows
         uses: ./.github/actions/get_running_workflows
         with:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Echo Output
-        run: echo ${{ steps.test.outputs.workflows_running }}
+  dummy_job:
+    needs: get_workflows
+    env:
+      workflows_running: ${{ needs.get_workflows.outputs.workflows_running }}
+    runs-on: ubuntu-latest
+    name: wait for some time
+    steps:
+      - name: Echo running var
+        run: echo ${{ env.workflows_running }}
         shell: bash
+      - name: Force fail
+        if: env.workflows_running == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: core.setFailed("There are existing workflows running")
+      - name: Sleep # do whatever here
+        if: success()
+        run: sleep 20s
+        shell: bash
+      - name: Notify pusher
+        if: failure() # if: failure()  
+        run: echo Pusher email is ${{ github.event.pusher.email }}
