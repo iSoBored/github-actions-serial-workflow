@@ -12,8 +12,6 @@ jobs:
       - name: Get Running Workflows
         id: get_running_workflows
         uses: ./.github/actions/get_running_workflows
-        with:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
   dummy_job:
     needs: get_workflows
     env:

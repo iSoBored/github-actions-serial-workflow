@@ -1,9 +1,5 @@
 name: Get Running Workflows
 description: Get existing workflows which are in progress or queued
-inputs:
-  TOKEN:
-    required: true
-    description: Token for auth
 outputs:
   workflows_running:
     description: true if there are existing workflows
