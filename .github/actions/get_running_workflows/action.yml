@@ -13,5 +13,7 @@ runs:
   steps:
     - run: |
         curl -L \
-        --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28"
       shell: bash
