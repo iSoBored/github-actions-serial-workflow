@@ -2,20 +2,19 @@ name: Test Workflow
 on: [push]
 
 jobs:
-  get_workflows:
+  check_workflows:
     runs-on: ubuntu-latest
     outputs:
-      workflows_running: ${{ steps.get_running_workflows.outputs.workflows_running }}
+      workflows_running: ${{ steps.check_running_workflows.outputs.workflows_running }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Get Running Workflows
-        id: get_running_workflows
-        uses: ./.github/actions/get_running_workflows
-  dummy_job:
-    needs: get_workflows
+      - name: Check Running Workflows
+        uses: ./.github/actions/check_running_workflows
+  main_job:
+    needs: check_workflows
     env:
-      workflows_running: ${{ needs.get_workflows.outputs.workflows_running }}
+      workflows_running: ${{ needs.check_workflows.outputs.workflows_running }}
     runs-on: ubuntu-latest
     name: wait for some time
     steps:

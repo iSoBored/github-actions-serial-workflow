@@ -1,5 +1,5 @@
-name: Get Running Workflows
-description: Get existing workflows which are in progress or queued
+name: Check Running Workflows
+description: Check for existing workflows which are in progress or queued
 outputs:
   workflows_running:
     description: true if there are existing workflows
