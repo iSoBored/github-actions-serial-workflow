@@ -40,10 +40,14 @@ runs:
         jq -r '.workflow_runs[].run_number' in_progress_runs.json >> all_runs.txt
       shell: bash
     - name: Check Existing Runs
+      id: check_existing
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
       run: | 
         chmod +x ./.github/actions/get_running_workflows/get_existing_runs.sh
         ./.github/actions/get_running_workflows/get_existing_runs.sh
+      shell: bash
+    - name: Echo Existing
+      run: echo ${{ steps.check_existing.outputs.existing_runs }}
       shell: bash
         
