@@ -32,6 +32,8 @@ runs:
         https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=in_progress > in_progress_runs.json
         jq -r '.workflow_runs[].run_number' in_progress_runs.json >> all_runs.txt
       shell: bash
+    - run: cat all_runs.txt
+      shell: bash
     - name: Check Existing Runs
       id: check_existing
       env:
