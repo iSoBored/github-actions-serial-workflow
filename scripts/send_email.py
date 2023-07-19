@@ -3,7 +3,7 @@ import os
 from sendgrid.helpers.mail import *
 
 sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_TOKEN"))
-from_email = Email("test@example.com")
+from_email = Email(os.getenv("EMAIL_SENDER"))
 to_email = To(os.getenv("PUSHER_EMAIL"))
 subject = "Sending with SendGrid is Fun"
 content = Content("text/plain", "and easy to do anywhere, even with Python")

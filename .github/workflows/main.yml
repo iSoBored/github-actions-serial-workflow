@@ -40,3 +40,4 @@ jobs:
         uses: ./.github/actions/notify_pusher
         with:
           SENDGRID_TOKEN: ${{ secrets.SENDGRID_TOKEN }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
