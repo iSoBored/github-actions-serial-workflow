@@ -42,11 +42,14 @@ A script then compares the list of run numbers with the run number of the curren
 [Potential issue with the bash script](#bash-script-when-checking-for-active-runs)
 
 # Scenarios
-### Scenario A
-Completed
+### Scenario A - No Other Active Runs
+Assume workflow 50 is started alone. Within the first job, we list workflows with a queued or in progress status. There will be no output when listing workflows with a queued status while workflow 50 will be listed under workflows with an in progress status as it is running this job currently. When the bash script is executed, 50 is the only run number in the list of all runs which is compared against the current run number, 50. Since there are no run numbers in the list lower than the current run number, it is determined that there are no preceding active runs and thus the second job will not fail.
 
-### Scenario B
-Active run
+### Scenario B - Preceding Active Run
+Assume workflow 50 is started and workflow 51 starts after workflow 50 has finished its first job. When workflow 50 runs, just like the previous example, it will be determined that there are no preceding active runs. When the first job of workflow 51 runs, workflow 51 will be listed as in progress while workflow 50 could either be queued or in progress, depending on whether workflow 50 has started its second job. Regardless of workflow 50's status, the list of all runs will contain both 50 and 51. When the bash script is executed, both numbers are compared against the current run number, 51. As there is a number in the list lower than the current run number, it is determined that there is a preceding active run and thus the second job will fail.
+
+### Scenario C - Following Active Run
+Assume workflow 50 is started and workflow 51 starts right after workflow 50. The flow of workflow 51 still follows the previous example but there are some differences for workflow 50. Since workflow 51 was started right after workflow 50, when workflow 50 is listing workflows, workflow 51 might be listed under queued or in progress, depending on whether it has started its first job. The list of all runs will therefore contain both 50 and 51. The bash script will then compare the list and the current run number, 50. However, since the list does not contain a lower run number than the current one, it is determined that even though there is another active run it does not precede the current one and thus the second job will not fail.
 
 
 # Potential Issues
