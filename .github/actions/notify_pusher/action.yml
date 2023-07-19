@@ -1,0 +1,26 @@
+name: Notify Pusher
+description: Send email to pusher if action fails
+inputs:
+  SENDGRID_TOKEN:
+    required: true
+    description: Token used for sendgrid auth
+runs:
+  using: composite
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        cache: "pip"
+    - name: Install Dependencies
+      run: pip install -r ./requirements.txt
+      shell: bash
+    - name: Notify pusher
+      env:
+        SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
+        PUSHER_EMAIL: ${{ github.event.pusher.email }}
+      run: python ./scripts/send_email.py
+      shell: bash
+    

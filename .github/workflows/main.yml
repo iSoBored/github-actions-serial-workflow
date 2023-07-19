@@ -33,5 +33,7 @@ jobs:
         run: sleep 20s
         shell: bash
       - name: Notify pusher
-        if: failure() # if: failure()  
-        run: echo Pusher email is ${{ github.event.pusher.email }}
+        if: always() # if: failure()
+        uses: ./.github/actions/notify_pusher
+        with:
+          SENDGRID_TOKEN: ${{ secrets.SENDGRID_TOKEN }}
