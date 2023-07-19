@@ -1,13 +1,14 @@
 import sendgrid
 import os
+from sendgrid.helpers.mail import *
 
-print("SENDGRID_TOKEN:", os.getenv("SENDGRID_TOKEN"))
-sg = sendgrid.SendGridAPIClient(os.getenv("SENDGRID_TOKEN"))
-message = sendgrid.Mail()
-
-print("PUSHER_EMAIL:", os.getenv("PUSHER_EMAIL"))
-message.add_to(os.getenv("PUSHER_EMAIL"))
-message.set_from("test@testemail.com")
-message.set_subject("Sending with SendGrid is Fun")
-message.set_html("and easy to do anywhere, even with Python")
-sg.send(message)
+sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_TOKEN"))
+from_email = Email("test@example.com")
+to_email = To(os.getenv("PUSHER_EMAIL"))
+subject = "Sending with SendGrid is Fun"
+content = Content("text/plain", "and easy to do anywhere, even with Python")
+mail = Mail(from_email, to_email, subject, content)
+response = sg.client.mail.send.post(request_body=mail.get())
+print(response.status_code)
+print(response.body)
+print(response.headers)
