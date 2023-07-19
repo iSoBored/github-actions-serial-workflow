@@ -2,7 +2,7 @@ import sendgrid
 import os
 
 print("SENDGRID_TOKEN:", os.getenv("SENDGRID_TOKEN"))
-sg = sendgrid.SendGridClient(os.getenv("SENDGRID_TOKEN"))
+sg = sendgrid.SendGridAPIClient(os.getenv("SENDGRID_TOKEN"))
 message = sendgrid.Mail()
 
 print("PUSHER_EMAIL:", os.getenv("PUSHER_EMAIL"))

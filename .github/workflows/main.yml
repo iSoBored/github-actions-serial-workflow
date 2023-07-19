@@ -30,7 +30,7 @@ jobs:
           script: core.setFailed("There are existing workflows running")
       - name: Sleep # do whatever here
         if: success()
-        run: sleep 20s
+        run: sleep 5s
         shell: bash
       - name: Checkout Repo
         if: always() # if: failure()
