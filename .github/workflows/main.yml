@@ -12,13 +12,5 @@ jobs:
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Sleep # MAIN STEP HERE
-        if: success()
-        run: sleep 30s
-        shell: bash
-      # - name: Notify pusher
-      #   if: failure() # if: failure()
-      #   uses: ./.github/actions/notify_pusher
-      #   with:
-      #     SENDGRID_TOKEN: ${{ secrets.SENDGRID_TOKEN }}
-      #     EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          SENDGRID_TOKEN: ${{ secrets.SENDGRID_TOKEN }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}

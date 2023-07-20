@@ -2,7 +2,14 @@ name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
 inputs:
   token:
+    required: true
     description: token for api call (secrets.GITHUB_TOKEN)
+  SENDGRID_TOKEN:
+    required: true
+    description: Token used for sendgrid auth
+  EMAIL_SENDER:
+    required: true
+    description: Email used to send mail
 runs:
   using: composite
   steps:
@@ -59,3 +66,8 @@ runs:
         script: |
           core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
           but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
+    - if: failure()
+      uses: ${{ github.action_path }}/.github/actions/notify_pusher
+      with:
+          SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
+          EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
