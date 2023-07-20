@@ -10,7 +10,7 @@ The workflow is split into three distinct steps:
 In this step, we get the workflow_id, which is used to find the same actions, by using the ["Get a workflow run"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#get-a-workflow-run) endpoint. We then look for runs which are queued and in progress through the ["List workflow runs for a repository"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-repository) endpoint. A script is run that checks the current run number against the active runs' run numbers and if there is a preceding active run, we fail this step.
 
 ### Step 2 - Main step
-Depending on whether the previous step succeeds or fails, we can run or fail this step which contains the action which we want to protect from parallel running.
+This is where we put the action we want to protect from parallel running. We can run this step based on the success or failure of the previous step.
 
 ### Step 3 - Notify pusher
 If we forced the action to fail, an email is sent to the user who triggered the current workflow to run, letting them know that there was another action already running.
@@ -37,7 +37,7 @@ flowchart LR
     
     style START fill:#FFFFFF00, stroke:#FFFFFF00;
 ```
-This means that if the second action lists workflows while the first action is in between jobs, the first action will not be returned if only listing in progress workflows. This is why we also include queued workflows under active runs in case our workflow has more than one job. 
+This means that if the second action lists workflows while the first action is in between jobs, the first action will not be returned if only listing in progress workflows. This is why we include queued workflows under active runs in case our workflow has more than one job. 
 
 ### Determining preceding active runs
 To get all active runs, we list all workflows which are queued and in progress with cURL commands then add their run numbers to a list.
@@ -54,8 +54,7 @@ Assume workflow 50 is started alone. Within the first job, we list workflows wit
 Assume workflow 50 is started and workflow 51 starts after workflow 50 has finished its first job. When workflow 50 runs, just like the previous example, it will be determined that there are no preceding active runs. When the first job of workflow 51 runs, workflow 51 will be listed as in progress while workflow 50 could either be queued or in progress, depending on whether workflow 50 has started its second job. Regardless of workflow 50's status, the list of all runs will contain both 50 and 51. When the bash script is executed, both numbers are compared against the current run number, 51. As there is a number in the list lower than the current run number, it is determined that there is a preceding active run and thus the action will fail.
 
 ### Scenario C - Following Active Run
-Assume workflow 50 is started and workflow 51 starts right after workflow 50. The flow of workflow 51 still follows the previous example but there are some differences for workflow 50. Since workflow 51 was started right after workflow 50, when workflow 50 is listing workflows, workflow 51 might be listed under queued or in progress, depending on whether it has started its first job. The list of all runs will therefore contain both 50 and 51. The bash script will then compare the list and the current run number, 50. However, since the list does not contain a lower run number than the current one, it is determined that even though there is another active run it does not precede the current one and thus the action will not fail.
-
+Assume workflow 50 is started and workflow 51 starts right after workflow 50. Workflow 51 follows the previous example but there are some differences for workflow 50. Since workflow 51 was started right after workflow 50, when workflow 50 is listing workflows, workflow 51 might be listed under queued or in progress, depending on whether it has started its first job. The list of all runs will therefore contain both 50 and 51. The bash script will then compare the list and the current run number, 50. However, since the list does not contain a lower run number than the current one, it is determined that even though there is another active run it does not precede the current one and thus the action will not fail.
 
 # Potential Issues
 ### Bash script when checking for active runs
