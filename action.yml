@@ -2,7 +2,7 @@ name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
 inputs:
   token:
-    description: token for api call
+    description: token for api call ${{ secrets.GITHUB_TOKEN }}
 runs:
   using: composite
   steps:
@@ -52,11 +52,6 @@ runs:
     - if: steps.check_existing.outputs.existing_runs != 'true'
       run: |
         echo "No existing runs found. Action will proceed."
-      shell: bash
-    - if: steps.check_existing.outputs.existing_runs == 'true'
-      run: |
-        echo "Existing run with run number of ${{ steps.check_existing.outputs.existing_run_number }} was found. \
-        Action will be forced to fail."
       shell: bash
     - if: steps.check_existing.outputs.existing_runs == 'true'
       uses: actions/github-script@v6
