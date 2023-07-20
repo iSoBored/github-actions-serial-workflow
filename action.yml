@@ -1,5 +1,8 @@
 name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
+inputs:
+  token:
+    description: token for api call
 runs:
   using: composite
   steps:
@@ -10,6 +13,7 @@ runs:
         curl -sL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
         -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer ${{ inputs.token }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > workflow_run.json
         cat workflow_run.json
       shell: bash
