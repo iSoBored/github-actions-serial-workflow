@@ -11,7 +11,7 @@ jobs:
       - name: Check Running Workflows
         id: check_running_workflows
         uses: ./.github/actions/check_running_workflows
-      - name: Sleep # MAIN JOB HERE
+      - name: Sleep # MAIN STEP HERE
         if: success()
         run: sleep 30s
         shell: bash
