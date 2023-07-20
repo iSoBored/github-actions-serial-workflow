@@ -2,39 +2,19 @@ name: Test Workflow
 on: [push]
 
 jobs:
-  check_workflows:
+  main_job:
     runs-on: ubuntu-latest
-    name: Check Workflows
-    outputs:
-      workflows_running: ${{ steps.check_running_workflows.outputs.workflows_running }}
+    name: Main Job
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Check Running Workflows
         id: check_running_workflows
         uses: ./.github/actions/check_running_workflows
-  main_job:
-    needs: check_workflows
-    env:
-      workflows_running: ${{ needs.check_workflows.outputs.workflows_running }}
-    runs-on: ubuntu-latest
-    name: Main Job
-    steps:
-      - name: Echo running var
-        run: echo ${{ env.workflows_running }}
-        shell: bash
-      - name: Force fail
-        if: env.workflows_running == 'true'
-        uses: actions/github-script@v6
-        with:
-          script: core.setFailed("There are existing workflows running")
-      - name: Sleep # do whatever here
+      - name: Sleep # MAIN JOB HERE
         if: success()
         run: sleep 30s
         shell: bash
-      - name: Checkout Repo
-        if: failure() # if: failure()
-        uses: actions/checkout@v3
       - name: Notify pusher
         if: failure() # if: failure()
         uses: ./.github/actions/notify_pusher

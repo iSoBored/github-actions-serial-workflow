@@ -4,12 +4,16 @@ outputs:
   workflows_running:
     description: true if there are existing workflows
     value: ${{ steps.check_existing.outputs.existing_runs }}
+  existing_run_number:
+    description: run number of preceding existing workflow
+    value: ${{ steps.check_existing.outputs.existing_run_number }}
 runs:
   using: composite
   steps:
     - name: Get Current workflow_id
       id: get_id
       run: |
+        echo "Getting the current workflow_id..."
         curl -L \
         --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
         -H "Accept: application/vnd.github+json" \
@@ -18,6 +22,7 @@ runs:
       shell: bash
     - name: Get Queued Runs
       run: |
+        echo "Getting the list of queued runs"
         curl -L \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -26,6 +31,7 @@ runs:
       shell: bash
     - name: Get In Progress Runs
       run: |
+        echo "Getting the list of in progress runs"
         curl -L \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -44,3 +50,18 @@ runs:
         chmod +x ./scripts/get_existing_runs.sh
         ./scripts/get_existing_runs.sh
       shell: bash
+    - if: steps.check_existing.outputs.existing_runs != "true"
+      run: |
+        echo "No existing runs found. Action will proceed."
+      shell: bash
+    - if: steps.check_existing.outputs.existing_runs == "true"
+      run: |
+        echo "Existing run with run number of ${{ steps.check_existing.outputs.existing_run_number }} was found. \
+        Action will be forced to fail."
+      shell: bash
+    - if: steps.check_existing.outputs.existing_runs == "true"
+      uses: actions/github-script@v6
+      with:
+        script: |
+          core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
+          but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
