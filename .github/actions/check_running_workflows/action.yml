@@ -50,16 +50,16 @@ runs:
         chmod +x ./scripts/get_existing_runs.sh
         ./scripts/get_existing_runs.sh
       shell: bash
-    - if: steps.check_existing.outputs.existing_runs != "true"
+    - if: steps.check_existing.outputs.existing_runs != 'true'
       run: |
         echo "No existing runs found. Action will proceed."
       shell: bash
-    - if: steps.check_existing.outputs.existing_runs == "true"
+    - if: steps.check_existing.outputs.existing_runs == 'true'
       run: |
         echo "Existing run with run number of ${{ steps.check_existing.outputs.existing_run_number }} was found. \
         Action will be forced to fail."
       shell: bash
-    - if: steps.check_existing.outputs.existing_runs == "true"
+    - if: steps.check_existing.outputs.existing_runs == 'true'
       uses: actions/github-script@v6
       with:
         script: |
