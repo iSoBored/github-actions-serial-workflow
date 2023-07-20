@@ -42,8 +42,8 @@ runs:
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
       run: |
-        chmod +x get_existing_runs.sh
-        get_existing_runs.sh
+        chmod +x ${{ github.action_path }}/scripts/get_existing_runs.sh
+        ${{ github.action_path }}/scripts/get_existing_runs.sh
       shell: bash
     - if: steps.check_existing.outputs.existing_runs != 'true'
       run: |
