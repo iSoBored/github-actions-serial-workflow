@@ -2,7 +2,7 @@ name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
 inputs:
   token:
-    description: token for api call ${{ secrets.GITHUB_TOKEN }}
+    description: token for api call (secrets.GITHUB_TOKEN)
 runs:
   using: composite
   steps:
