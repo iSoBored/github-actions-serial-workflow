@@ -35,13 +35,15 @@ runs:
       run: |
         printf "All Runs:\n$(cat all_runs.txt)"
       shell: bash
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
     - name: Check Existing Runs
       id: check_existing
       env:
         CURRENT_RUN_NUMBER: ${{ github.run_number }}
       run: |
-        chmod +x ${{ github.action_path }}/get_existing_runs.sh
-        ${{ github.action_path }}/get_existing_runs.sh
+        chmod +x ./scripts/get_existing_runs.sh
+        ./scripts/get_existing_runs.sh
       shell: bash
     - if: steps.check_existing.outputs.existing_runs != 'true'
       run: |
