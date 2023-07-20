@@ -1,12 +1,5 @@
 name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
-outputs:
-  workflows_running:
-    description: true if there are existing workflows
-    value: ${{ steps.check_existing.outputs.existing_runs }}
-  existing_run_number:
-    description: run number of preceding existing workflow
-    value: ${{ steps.check_existing.outputs.existing_run_number }}
 runs:
   using: composite
   steps:

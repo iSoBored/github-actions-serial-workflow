@@ -1,4 +1,4 @@
-name: Test Workflow
+name: Serial Workflow
 on: [push]
 
 jobs:
@@ -9,7 +9,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Check Running Workflows
-        id: check_running_workflows
         uses: ./.github/actions/check_running_workflows
       - name: Sleep # MAIN STEP HERE
         if: success()
