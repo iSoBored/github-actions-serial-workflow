@@ -9,7 +9,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Check Running Workflows
-        uses: ./.github/actions/check_running_workflows
+        uses: ./check_running_workflows
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Sleep # MAIN STEP HERE
