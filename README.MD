@@ -4,15 +4,12 @@ GitHub runs actions in parallel which can cause problems when two instances of t
 # Overview
 The workflow checks for existing runs and forces the action to fail if there are existing runs found. The workflow in this repository only contains a single job but it can be extended to have more jobs and fail them too if needed.
 
-The workflow is split into three distinct steps:
+The workflow is split into two distinct steps:
 
 ### Step 1 - Check if there are preceding active runs
 In this step, we get the workflow_id, which is used to find the same actions, by using the ["Get a workflow run"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#get-a-workflow-run) endpoint. We then look for runs which are queued and in progress through the ["List workflow runs for a repository"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-repository) endpoint. A script is run that checks the current run number against the active runs' run numbers and if there is a preceding active run, we fail this step.
 
-### Step 2 - Main step
-This is where we put the action we want to protect from parallel running. We can run this step based on the success or failure of the previous step.
-
-### Step 3 - Notify pusher
+### Step 2 - Notify pusher
 If we forced the action to fail, an email is sent to the user who triggered the current workflow to run, letting them know that there was another action already running.
 
 # Methodology
