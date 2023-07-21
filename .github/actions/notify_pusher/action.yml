@@ -18,11 +18,11 @@ runs:
     - name: Install Dependencies
       run: pip install -r ./requirements.txt
       shell: bash
-    # - name: Notify pusher
-    #   env:
-    #     SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
-    #     EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
-    #     PUSHER_EMAIL: ${{ github.event.pusher.email }}
-    #   run: python ./scripts/send_email.py
-    #   shell: bash
+    - name: Notify pusher
+      env:
+        SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
+        EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
+        PUSHER_EMAIL: ${{ github.event.pusher.email }}
+      run: python ./scripts/send_email.py
+      shell: bash
     
