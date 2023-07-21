@@ -66,14 +66,12 @@ runs:
         script: |
           core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
           but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
-    - if: always()
-      uses: actions/checkout@v3
     - name: Setup Python
       if: always()
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-        cache: "pip"
+        cache: "${{ github.action_path }}/pip"
     - name: Install Dependencies
       if: always()
       run: pip install -r ${{ github.action_path }}/requirements.txt
