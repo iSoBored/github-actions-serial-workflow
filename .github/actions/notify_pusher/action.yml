@@ -22,6 +22,6 @@ runs:
         SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
         EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
         PUSHER_EMAIL: ${{ github.event.pusher.email }}
-      run: python ${{ github.action_path }}/scripts/send_email.py
+      run: python ${{ github.action_path }}/send_email.py
       shell: bash
     
