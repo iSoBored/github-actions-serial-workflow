@@ -14,15 +14,14 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-        cache: "pip"
     - name: Install Dependencies
-      run: pip install -r ./requirements.txt
+      run: pip install -r ${{ github.action_path }}/requirements.txt
       shell: bash
     - name: Notify pusher
       env:
         SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
         EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
         PUSHER_EMAIL: ${{ github.event.pusher.email }}
-      run: python ./scripts/send_email.py
+      run: python ${{ github.action_path }}/scripts/send_email.py
       shell: bash
     
