@@ -66,8 +66,21 @@ runs:
         script: |
           core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
           but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
-    - if: always()
-      uses: iSoBored/github-actions-serial-workflow/.github/actions/notify_pusher
+    - name: Setup Python
+      if: always()
+      uses: actions/setup-python@v4
       with:
-          SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
-          EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
+        python-version: "3.11"
+        cache: "pip"
+    - name: Install Dependencies
+      if: always()
+      run: pip install -r ${{ github.action_path }}/requirements.txt
+      shell: bash
+    - name: Notify pusher
+      if: always()
+      env:
+        SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
+        EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
+        PUSHER_EMAIL: ${{ github.event.pusher.email }}
+      run: python ${{ github.action_path }}/scripts/send_email.py
+      shell: bash
