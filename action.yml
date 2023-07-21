@@ -67,7 +67,6 @@ runs:
           core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
           but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
     - if: always()
-      working-directory: ${{ github.action_path }}
       uses: .github/actions/notify_pusher
       with:
           SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
