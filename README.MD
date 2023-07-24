@@ -73,8 +73,8 @@ jobs:
     steps:
       - name: Check Running Workflows
         uses: iSoBored/github-actions-serial-workflow@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   main_job:
     needs: [check_running_workflow]
     ...
