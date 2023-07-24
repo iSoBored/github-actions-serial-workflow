@@ -6,7 +6,7 @@ echo "existing_run_number=None" >> "$GITHUB_OUTPUT"
 
 if [ "${#all_runs[@]}" -lt 1 ]
 then
-    echo "existing_runs=true" >> "$GITHUB_OUTPUT"
+    echo "no_runs=true" >> "$GITHUB_OUTPUT"
 fi
 
 for run_number in "${all_runs[@]}"; do

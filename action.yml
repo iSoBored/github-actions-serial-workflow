@@ -57,6 +57,11 @@ runs:
       run: |
         echo "No existing runs found. Action will proceed."
       shell: bash
+    - if: steps.check_existing.outputs.no_runs == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          core.setFailed("Failing the action as no runs were found.")
     - if: steps.check_existing.outputs.existing_runs == 'true'
       uses: actions/github-script@v6
       with:
