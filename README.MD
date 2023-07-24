@@ -1,10 +1,10 @@
 # About
-GitHub runs actions in parallel which can cause problems when two instances of the same action run at the same time. This workflow fails the current action if the same action is already running
+GitHub runs actions in parallel which can cause problems when two instances of the same action run at the same time. This action fails the current action if the same action is already running
 
 # Overview
-The workflow checks for existing runs and forces the action to fail if there are existing runs found. The workflow in this repository only contains a single job but it can be extended to have more jobs and fail them too if needed.
+The action checks for existing runs and forces the action to fail if there are existing runs found. The workflow in this repository only contains a single job but it can be extended to have more jobs and fail them too if needed.
 
-The workflow is split into two distinct steps:
+The action is split into two distinct steps:
 
 ### Step 1 - Check if there are preceding active runs
 In this step, we get the workflow_id, which is used to find the same actions, by using the ["Get a workflow run"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#get-a-workflow-run) endpoint. We then look for runs which are queued and in progress through the ["List workflow runs for a repository"](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-repository) endpoint. A script is run that checks the current run number against the active runs' run numbers and if there is a preceding active run, we fail this step.
@@ -58,3 +58,24 @@ Assume workflow 50 is started and workflow 51 starts right after workflow 50. Wo
 There can be a problem if somehow the run numbers are out of order *e.g. the workflow with run number 51 runs before the workflow with run number 50*. If the second workflow doesn't get queued or start before the first checks for active workflows, the first workflow will not fail meaning both will run. If this is an issue that can occur, the script should check for a mismatch instead.
 
 However, when checking for a mismatch, there can also be an issue if the run numbers are in order and the workflows are triggered close together. In this case, when the first workflow checks for active runs, the second workflow is already queued which causes the first workflow to fail. The second workflow can also fail if it checks for active runs before the first workflow terminates. This can result in both workflows failing.
+
+# Usage
+```
+name: Serial Workflow
+on: [push]
+
+jobs:
+  check_job:
+    runs-on: ubuntu-latest
+    name: Check Job
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Check Running Workflows
+        uses: iSoBored@github-actions-serial-workflow@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+  main_job:
+    needs: [check_job]
+    ...
+```
