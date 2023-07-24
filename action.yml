@@ -1,15 +1,12 @@
 name: Check Running Workflows
 description: Check for existing workflows which are in progress or queued
-inputs:
-  token:
-    required: true
-    description: token for api call (secrets.GITHUB_TOKEN)
-  SENDGRID_TOKEN:
-    required: true
-    description: Token used for sendgrid auth
-  EMAIL_SENDER:
-    required: true
-    description: Email used to send mail
+# inputs:
+#   SENDGRID_TOKEN:
+#     required: true
+#     description: Token used for sendgrid auth
+#   EMAIL_SENDER:
+#     required: true
+#     description: Email used to send mail
 runs:
   using: composite
   steps:
@@ -20,7 +17,7 @@ runs:
         curl -sL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${{ inputs.token }}" \
+        -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > workflow_run.json
         echo "workflow_id=$(jq -r '.workflow_id' workflow_run.json)" >> "$GITHUB_OUTPUT"
       shell: bash
@@ -30,7 +27,7 @@ runs:
         curl -sL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=queued \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${{ inputs.token }}" \
+        -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > queued_runs.json
         printf "Queued Runs:\n$(jq -r '.workflow_runs[].run_number' queued_runs.json | tee -a all_runs.txt)"
       shell: bash
@@ -40,7 +37,7 @@ runs:
         curl -sL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=in_progress \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${{ inputs.token }}" \
+        -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > in_progress_runs.json
         printf "In Progress Runs:\n$(jq -r '.workflow_runs[].run_number' in_progress_runs.json | tee -a all_runs.txt)"
       shell: bash
