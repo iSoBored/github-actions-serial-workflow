@@ -66,9 +66,9 @@ runs:
         script: |
           core.setFailed("Failing the action as the current run number is ${{ github.run_number }} \
           but we found a workflow running with run number ${{ steps.check_existing.outputs.existing_run_number }}.")
-    - name: Notify pusher
-      if: failure()
-      uses: iSoBored/github-actions-serial-workflow/.github/actions/notify_pusher@main
-      with:
-        SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
-        EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
+    # - name: Notify pusher
+    #   if: failure()
+    #   uses: iSoBored/github-actions-serial-workflow/.github/actions/notify_pusher@main
+    #   with:
+    #     SENDGRID_TOKEN: ${{ inputs.SENDGRID_TOKEN }}
+    #     EMAIL_SENDER: ${{ inputs.EMAIL_SENDER }}
