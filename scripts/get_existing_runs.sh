@@ -1,4 +1,5 @@
 mapfile -t all_runs < all_runs.txt
+echo "no_runs=false" >> "$GITHUB_OUTPUT"
 echo "existing_runs=false" >> "$GITHUB_OUTPUT"
 echo "existing_run_number=None" >> "$GITHUB_OUTPUT"
 
