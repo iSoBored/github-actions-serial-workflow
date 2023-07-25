@@ -60,7 +60,7 @@ There can be a problem if somehow the run numbers are out of order *e.g. the wor
 However, when checking for a mismatch, there can also be an issue if the run numbers are in order and the workflows are triggered close together. In this case, when the first workflow checks for active runs, the second workflow is already queued which causes the first workflow to fail. The second workflow can also fail if it checks for active runs before the first workflow terminates. This can result in both workflows failing.
 
 # Usage
-We use the built-in [GITHUB_TOKEN](https://docs.github.com/en/rest/overview/authenticating-to-the-rest-api?apiVersion=2022-11-28#authenticating-in-a-github-actions-workflow) to authenticate with the GitHub Rest API.
+We use the built-in [GITHUB_TOKEN](https://docs.github.com/en/rest/overview/authenticating-to-the-rest-api?apiVersion=2022-11-28#authenticating-in-a-github-actions-workflow) to authenticate with the GitHub Rest API and give it the permission to read actions.
 
 ```
 name: Serial Workflow
@@ -68,6 +68,8 @@ on: [push]
 
 jobs:
   check_running_workflow:
+    permissions:
+      actions: read
     runs-on: ubuntu-latest
     name: Check Running Workflow
     steps:
