@@ -29,8 +29,8 @@ runs:
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > queued_runs.json
-        printf "queued_runs.json:\n$(cat queued_runs.json)"
-        printf "Queued Runs:\n$(jq -r '.workflow_runs[].run_number' queued_runs.json | tee -a all_runs.txt)"
+        printf "queued_runs.json:\n$(cat queued_runs.json)\n"
+        printf "Queued Runs:\n$(jq -r '.workflow_runs[].run_number' queued_runs.json | tee -a all_runs.txt)\n"
         printf "all_runs.txt:\n$(cat all_runs.txt)"
       shell: bash
     - name: Get In Progress Runs
@@ -41,8 +41,8 @@ runs:
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > in_progress_runs.json
-        printf "queued_runs.json:\n$(cat in_progress_runs.json)"
-        printf "In Progress Runs:\n$(jq -r '.workflow_runs[].run_number' in_progress_runs.json | tee -a all_runs.txt)"
+        printf "queued_runs.json:\n$(cat in_progress_runs.json)\n"
+        printf "In Progress Runs:\n$(jq -r '.workflow_runs[].run_number' in_progress_runs.json | tee -a all_runs.txt)\n"
         printf "all_runs.txt:\n$(cat all_runs.txt)"
       shell: bash
     - name: Log All Runs
