@@ -14,7 +14,7 @@ runs:
       id: get_id
       run: |
         echo "Getting the current workflow_id..."
-        curl -sL \
+        curl -ivL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
@@ -24,7 +24,7 @@ runs:
     - name: List Recent Runs
       run: |
         echo "Getting the list of recent runs..."
-        curl -sL \
+        curl -ivL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?per_page=5 \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
@@ -38,7 +38,7 @@ runs:
     - name: Get Queued Runs
       run: |
         echo "Getting the list of queued runs..."
-        curl -sL \
+        curl -ivL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=queued \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
@@ -50,7 +50,7 @@ runs:
     - name: Get In Progress Runs
       run: |
         echo "Getting the list of in progress runs..."
-        curl -sL \
+        curl -ivL \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=in_progress \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
