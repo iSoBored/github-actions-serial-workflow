@@ -14,7 +14,7 @@ runs:
       id: get_id
       run: |
         echo "Getting the current workflow_id..."
-        curl -vL \
+        curl -L \
         --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
@@ -24,11 +24,12 @@ runs:
     - name: List Recent Runs
       run: |
         echo "Getting the list of recent runs..."
-        curl -vL \
+        curl -vLD recent_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?per_page=5 \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > recent_runs.json
+        printf "recent_runs_headers.txt:\n$(cat recent_runs_headers.txt)\n"
       shell: bash
     - name: Upload recent_runs.json as artifact
       uses: actions/upload-artifact@v3
@@ -38,11 +39,12 @@ runs:
     - name: Get Queued Runs
       run: |
         echo "Getting the list of queued runs..."
-        curl -vL \
+        curl -vLD queued_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=queued \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > queued_runs.json
+        printf "queued_runs_headers.txt:\n$(cat queued_runs_headers.txt)\n"
         printf "queued_runs.json:\n$(cat queued_runs.json)\n"
         printf "Queued Runs:\n$(jq -r '.workflow_runs[].run_number' queued_runs.json | tee -a all_runs.txt)\n"
         printf "all_runs.txt:\n$(cat all_runs.txt)\n"
@@ -50,11 +52,12 @@ runs:
     - name: Get In Progress Runs
       run: |
         echo "Getting the list of in progress runs..."
-        curl -vL \
+        curl -vLD in_progress_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=in_progress \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" > in_progress_runs.json
+        printf "in_progress_runs_headers.txt:\n$(cat in_progress_runs_headers.txt)\n"
         printf "in_progress_runs.json:\n$(cat in_progress_runs.json)\n"
         printf "In Progress Runs:\n$(jq -r '.workflow_runs[].run_number' in_progress_runs.json | tee -a all_runs.txt)\n"
         printf "all_runs.txt:\n$(cat all_runs.txt)\n"
