@@ -24,16 +24,16 @@ runs:
     - name: List Recent Runs
       run: |
         echo "Getting the list of recent runs..."
-        curl -vLD /logs/recent_runs_headers.txt \
+        curl -vLD ./logs/recent_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?per_page=5 \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
-        -H "X-GitHub-Api-Version: 2022-11-28" > /logs/recent_runs.json
+        -H "X-GitHub-Api-Version: 2022-11-28" > ./logs/recent_runs.json
       shell: bash
     - name: Get Queued Runs
       run: |
         echo "Getting the list of queued runs..."
-        curl -vLD /logs/queued_runs_headers.txt \
+        curl -vLD ./logs/queued_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=queued \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
@@ -45,7 +45,7 @@ runs:
     - name: Get In Progress Runs
       run: |
         echo "Getting the list of in progress runs..."
-        curl -vLD /logs/in_progress_runs_headers.txt \
+        curl -vLD ./logs/in_progress_runs_headers.txt \
         --url https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ steps.get_id.outputs.workflow_id }}/runs?status=in_progress \
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
